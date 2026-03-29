@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO 🎮 | Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="layout-wrapper">
+        <aside class="sidebar-container">
+            <div class="sidebar">
+                <div class="brand">📦 Nexus PO</div>
+                <nav class="mt-4 flex-grow-1">
+                    <a href="index.html" class="nav-link-custom active">📊 Live Dashboard</a>
+                    <a href="create_po.html" class="nav-link-custom">🛒 New Purchase Order</a>
+                    <a href="create_product.html" class="nav-link-custom">📦 Add to Catalog</a>
+                </nav>
+                <div class="user-widget mt-auto">
+                    <button class="btn-gamified btn-danger-gamified" style="width: 100%; border-radius: 20px; font-size: 1rem;" onclick="logout()">
+                        🚪 Log Out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                📊 Purchase Orders
+            </header>
+
+            <div class="emoji-card fade-in">
+                <div class="card-title justify-content-between">
+                    <span>🔥 Recent Orders</span>
+                    <button class="btn btn-sm btn-light border p-2" onclick="fetchPOs()" style="border-radius: 12px; font-size: 1.2rem;">🔄</button>
+                </div>
+                
+                <div class="table-container" style="overflow-x: auto;">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>🏷️ Ref No</th>
+                                <th>🏢 Vendor ID</th>
+                                <th>💰 Total Amount</th>
+                                <th>💸 Tax</th>
+                                <th>📊 Status</th>
+                                <th class="text-end">⚒️ Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="po-table-body">
+                            <tr><td colspan="6" class="text-center text-muted py-5" style="font-size: 1.5rem; font-weight: 800;">⌛ Loading pipeline data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden native Toast Container loaded by JS -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055; display: none;"></div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        fetchPOs();
+        initWebSocket();
+    </script>
+</body>
+</html>

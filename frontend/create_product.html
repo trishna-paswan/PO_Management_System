@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO 🎮 | Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="layout-wrapper">
+        <aside class="sidebar-container">
+            <div class="sidebar">
+                <div class="brand">📦 Nexus PO</div>
+                <nav class="mt-4 flex-grow-1">
+                    <a href="index.html" class="nav-link-custom">📊 Live Dashboard</a>
+                    <a href="create_po.html" class="nav-link-custom">🛒 New Purchase Order</a>
+                    <a href="create_product.html" class="nav-link-custom active">📦 Add to Catalog</a>
+                </nav>
+                <div class="user-widget mt-auto">
+                    <button class="btn-gamified btn-danger-gamified" style="width: 100%; border-radius: 20px; font-size: 1rem;" onclick="logout()">
+                        🚪 Log Out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                📦 Add Product Catalog
+            </header>
+
+            <div class="row fade-in">
+                <div class="col-lg-8">
+                    <form id="create-product-form" class="emoji-card">
+                        <div class="card-title">
+                            💾 Core Details
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="label-gamified">🛒 Product Name</label>
+                                <input type="text" class="input-bouncy" id="p-name" required placeholder="e.g. Ergonomic Keyboard" onblur="draftAIDescription()">
+                            </div>
+                            <div class="col-md-6 mt-4 mt-md-0">
+                                <label class="label-gamified">🏷️ SKU</label>
+                                <input type="text" class="input-bouncy" id="p-sku" required placeholder="KEY-001">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <label class="label-gamified">💵 Unit Price ($)</label>
+                                <input type="number" class="input-bouncy" id="p-price" step="0.01" required placeholder="149.99">
+                            </div>
+                            <div class="col-md-6 mt-4 mt-md-0">
+                                <label class="label-gamified">🧱 Initial Stock Level</label>
+                                <input type="number" class="input-bouncy" id="p-stock" required placeholder="500">
+                            </div>
+                        </div>
+
+                        <div class="ai-magic-box">
+                            <div class="ai-magic-content">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <label class="label-gamified mb-0">🤖 AI Generated Marketing Copy</label>
+                                    <span class="badge bg-dark rounded-pill px-3 py-2 fw-bold" style="font-size: 0.9rem;">⚡ Live Engine</span>
+                                </div>
+                                <textarea class="input-bouncy border-0 bg-light" style="min-height: 140px; resize: none; border-radius: 15px;" id="p-desc" placeholder="Type a product name above to auto-generate a description!"></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-gamified mt-5" id="save-product-btn">🚀 Commit Product!</button>
+                    </form>
+                </div>
+                
+                <div class="col-lg-4 d-none d-lg-block">
+                    <div class="emoji-card" style="position: sticky; top: 30px; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 2px #fff;">
+                        <h4 class="fw-bold mb-4" style="font-weight: 900;">🧠 How it works</h4>
+                        <p class="text-dark fw-bold mb-4" style="font-size: 1.1rem; line-height: 1.6;">Our AI engine natively parses the product configuration through Google Gemini and automatically constructs professional SEO-ready copywriting snippets before you even press save.</p>
+                        <p class="text-muted fw-bold mb-0 border-start border-4 border-primary ps-3" style="font-size: 1.05rem;">If a unique constraint occurs (e.g. duplicate SKU), the NoSQL raw log is skipped and a safe UI error will intercept it cleanly.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden field to store saved product id -->
+    <input type="hidden" id="saved-product-id">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
