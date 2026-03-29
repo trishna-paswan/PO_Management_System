@@ -1,57 +1,62 @@
-# Purchase Order Management System 🎮 📦
+# PO Nexus | Purchase Order Management System
 
-A fully-featured, deeply gamified full-stack application built to track procurement logic, execute real-time web-socket updates, and natively ingest Google Gemini AI completions into a NoSQL log.
+A professional, enterprise-grade full-stack application designed for streamlined procurement management. Featuring a modern Tailwind CSS interface, real-time WebSocket updates, and native Google Gemini AI integration for automated product cataloging.
 
 ## Features
-- **Gamified Emoji UI**: Bouncing neon buttons, massive CSS aurora gradients, and natively structured OS emojis driving the sidebar.
-- **RESTful API Engine**: Built heavily on Python FastAPI.
-- **Real-Time WebSockets**: A detached Node.js microservice (`notification_service`) broadcasts socket events back to the client whenever PO status changes locally, allowing Live Dashboard Sync without user reloading.
-- **Hybrid Data Design**:
-  1. **SQLite (Relational)**: Core procurement data cleanly decoupled into normalized tables `Vendor`, `Product`, `PurchaseOrder`, and `POItem`.
-  2. **MongoDB (NoSQL)**: High-speed logging pipe. Every time Gemini writes a marketing description, the raw JSON payload is thrown into MongoDB without rigid schema constraints.
+- **Professional Enterprise UI**: A clean, high-performance interface built with **Tailwind CSS**, **Inter** typography, and **Lucide Icons**. Optimized for clarity and efficiency.
+- **RESTful API Engine**: A robust backend architecture powered by **Python FastAPI** for high-speed data processing and type-safe endpoints.
+- **Real-Time WebSockets**: A dedicated Node.js microservice (`notification_service`) provides instant dashboard synchronization, broadcasting status changes to all connected clients without page reloads.
+- **Hybrid Data Architecture**:
+  1. **SQLite (Relational Core)**: Normalized relational schema for procurement logic, including `Vendor`, `Product`, `PurchaseOrder`, and `POItem` with strict referential integrity.
+  2. **MongoDB (NoSQL Layer)**: High-speed unstructured logging for AI-generated content. Raw JSON payloads from Gemini AI completions are stored without rigid schema constraints for analytics.
 
 ---
 
-## The Database Logic
-We use a **Hybrid Relational-NoSQL Strategy**.
+## Technical Architecture
 
-### 1. SQLite Relational Core `po_db.sqlite`
-Because Procurement requires ironclad constraints (calculating cart totals, inventory validation, vendor linking), this must be normalized.
-*   **`vendors` Table**: Stores Partner profiles. Has a `One-to-Many` relationship with `purchase_orders` (One Vendor can be assigned to multiple POs).
-*   **`products` Table**: Stores the physical raw catalog (Unit Prices, SKUs).
-*   **`purchase_orders` Table**: Core logistic object holding calculations (Total Amount, Tax) and tracking operational `State` (Pending -> Approved -> Completed). Holds a **Foreign Key** to `vendors.id`.
-*   **`po_items` Table**: A junction table that resolves the `Many-to-Many` relationship between `purchase_orders` and `products`. It anchors to `po_id` and `product_id` and securely logs the historical `price_at_purchase` locally so future product price fluctuations don't alter finalized cart receipts!
+### 1. Relational Logic (SQLite)
+The core procurement flow requires high data integrity for financial calculations and inventory tracking:
+*   **Vendors**: Profiles for supply partners with a `One-to-Many` relationship to orders.
+*   **Products**: Master catalog holding SKUs and unit prices.
+*   **Purchase Orders**: Tracks operational states (Pending -> Approved -> Completed) and financial totals.
+*   **PO Items**: Junction table resolving the `Many-to-Many` relationship between orders and products, capturing the `price_at_purchase` to preserve historical financial accuracy.
 
-### 2. MongoDB Unstructured Layer `po_management.ai_logs`
-Because AI outputs (`product_name`, `description`, `tokens_used`) are largely unstructured analytics and never affect standard logistical tracking, forcefully putting them into our strict SQLite DB is anti-pattern. Instead, they are quickly dumped natively as raw JSON BSON blobs directly into the `ai_logs` namespace collection in MongoDB.
+### 2. AI Intelligence (MongoDB & Gemini)
+When adding new products, the system utilizes **Google Gemini AI** to generate professional marketing copy. These logs—including token usage and raw descriptions—are piped into MongoDB to keep the relational core focused strictly on logistics.
 
 ---
 
-## How to Run it Locally
+## Local Setup
 
-This is a microservice architecture. You need **three separate terminals** running at the same time to power the interface.
+This microservice architecture requires three concurrent processes:
 
-**Terminal 1: FastAPI Python Backend**
+### Terminal 1: Python Backend (FastAPI)
 ```bash
 cd backend_python
-source .venv/bin/activate  # If you use a virtual environment
+# Recommended: Create and activate a virtual environment
 python main.py
 ```
-*(This will boot the API on `http://localhost:8080`)*
+*API runs on: `http://localhost:8080`*
 
-**Terminal 2: Node WebSocket Microservice**
+### Terminal 2: Notification Service (Node.js)
 ```bash
 cd notification_service
-npm i
+npm install
 node server.js
 ```
-*(This boots the websocket relayer on `http://localhost:3000`)*
+*WebSocket relayer runs on: `http://localhost:3000`*
 
-**Terminal 3: UI Static Client**
+### Terminal 3: Frontend Client
 ```bash
 cd frontend
+# You can use any static server, e.g., Python's built-in module
 python3 -m http.server 8000
 ```
-*(This serves the HTML/JS dashboard on `http://localhost:8000`)*
+*Dashboard accessible at: `http://localhost:8000`*
 
-> **Note on MongoDB**: Head to `http://localhost:8000/login.html` to start! If you don't actually have a MongoDB service running on your local Mac port 27017, the Python backend will silently catch the AI timeout natively and skip the logging! No errors will occur!
+---
+
+## Authentication
+Navigate to `http://localhost:8000/login.html` to begin. The system includes a mock Google OAuth flow for demonstration purposes.
+
+> **Note on MongoDB**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging without interrupting core procurement functionality.
