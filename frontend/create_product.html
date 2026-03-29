@@ -3,91 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PO 🎮 | Catalog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>PO Nexus | Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="layout-wrapper">
-        <aside class="sidebar-container">
-            <div class="sidebar">
-                <div class="brand">📦 Nexus PO</div>
-                <nav class="mt-4 flex-grow-1">
-                    <a href="index.html" class="nav-link-custom">📊 Live Dashboard</a>
-                    <a href="create_po.html" class="nav-link-custom">🛒 New Purchase Order</a>
-                    <a href="create_product.html" class="nav-link-custom active">📦 Add to Catalog</a>
-                </nav>
-                <div class="user-widget mt-auto">
-                    <button class="btn-gamified btn-danger-gamified" style="width: 100%; border-radius: 20px; font-size: 1rem;" onclick="logout()">
-                        🚪 Log Out
-                    </button>
+<body class="bg-slate-50 text-slate-900">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center gap-2 font-bold text-xl text-blue-600">
+                    <i data-lucide="package" class="w-6 h-6"></i>
+                    <span>PO Nexus</span>
                 </div>
+            </div>
+            <nav class="flex-grow p-4 space-y-1">
+                <a href="index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="create_po.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    <span class="font-medium">New Order</span>
+                </a>
+                <a href="create_product.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                    <span class="font-medium">Product Catalog</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-200">
+                <button onclick="logout()" class="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-600 hover:bg-red-50 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span class="font-medium">Log Out</span>
+                </button>
             </div>
         </aside>
 
-        <main class="main-content">
-            <header class="page-header">
-                📦 Add Product Catalog
+        <!-- Main Content -->
+        <main class="flex-grow flex flex-col">
+            <!-- Topbar -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8">
+                <h1 class="text-lg font-semibold text-slate-800">Product Catalog Management</h1>
+                <div class="flex items-center gap-4">
+                    <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">JD</div>
+                </div>
             </header>
 
-            <div class="row fade-in">
-                <div class="col-lg-8">
-                    <form id="create-product-form" class="emoji-card">
-                        <div class="card-title">
-                            💾 Core Details
-                        </div>
-                        
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <label class="label-gamified">🛒 Product Name</label>
-                                <input type="text" class="input-bouncy" id="p-name" required placeholder="e.g. Ergonomic Keyboard" onblur="draftAIDescription()">
-                            </div>
-                            <div class="col-md-6 mt-4 mt-md-0">
-                                <label class="label-gamified">🏷️ SKU</label>
-                                <input type="text" class="input-bouncy" id="p-sku" required placeholder="KEY-001">
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-5">
-                            <div class="col-md-6">
-                                <label class="label-gamified">💵 Unit Price ($)</label>
-                                <input type="number" class="input-bouncy" id="p-price" step="0.01" required placeholder="149.99">
-                            </div>
-                            <div class="col-md-6 mt-4 mt-md-0">
-                                <label class="label-gamified">🧱 Initial Stock Level</label>
-                                <input type="number" class="input-bouncy" id="p-stock" required placeholder="500">
-                            </div>
-                        </div>
-
-                        <div class="ai-magic-box">
-                            <div class="ai-magic-content">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <label class="label-gamified mb-0">🤖 AI Generated Marketing Copy</label>
-                                    <span class="badge bg-dark rounded-pill px-3 py-2 fw-bold" style="font-size: 0.9rem;">⚡ Live Engine</span>
+            <!-- Content Area -->
+            <div class="p-8">
+                <div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form -->
+                    <div class="lg:col-span-2">
+                        <form id="create-product-form" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                            <h2 class="text-xl font-bold text-slate-900 border-b border-slate-100 pb-4">Product Details</h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-1">
+                                    <label class="text-sm font-medium text-slate-700">Product Name</label>
+                                    <input type="text" id="p-name" required placeholder="e.g. Ergonomic Keyboard" onblur="draftAIDescription()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
                                 </div>
-                                <textarea class="input-bouncy border-0 bg-light" style="min-height: 140px; resize: none; border-radius: 15px;" id="p-desc" placeholder="Type a product name above to auto-generate a description!"></textarea>
+                                <div class="space-y-1">
+                                    <label class="text-sm font-medium text-slate-700">SKU</label>
+                                    <input type="text" id="p-sku" required placeholder="e.g. KEY-001" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-sm font-medium text-slate-700">Unit Price ($)</label>
+                                    <input type="number" id="p-price" step="0.01" required placeholder="0.00" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-sm font-medium text-slate-700">Initial Stock</label>
+                                    <input type="number" id="p-stock" required placeholder="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2 p-5 bg-blue-50 rounded-xl border border-blue-100">
+                                <div class="flex items-center justify-between mb-2">
+                                    <label class="text-sm font-bold text-blue-900 uppercase tracking-tight flex items-center gap-2">
+                                        <i data-lucide="sparkles" class="w-4 h-4"></i> AI Description
+                                    </label>
+                                    <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">Gemini AI</span>
+                                </div>
+                                <textarea id="p-desc" placeholder="AI will generate a description based on the name..." class="w-full bg-white/80 border border-blue-200 rounded-lg px-4 py-3 text-sm text-slate-700 min-h-[120px] focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" id="save-product-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="save" class="w-5 h-5"></i>
+                                Save to Catalog
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Info Sidebar -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                            <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                                <i data-lucide="help-circle" class="w-5 h-5 text-blue-600"></i>
+                                Smart Cataloging
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Our AI engine automatically constructs professional marketing copy for your products. Simply enter a name and the system will handle the rest.
+                            </p>
+                            <div class="pt-4 space-y-3 text-xs text-slate-500">
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                                    <span>Unique SKU validation</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                                    <span>Real-time inventory tracking</span>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                                    <span>SEO-optimized descriptions</span>
+                                </div>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn-gamified mt-5" id="save-product-btn">🚀 Commit Product!</button>
-                    </form>
-                </div>
-                
-                <div class="col-lg-4 d-none d-lg-block">
-                    <div class="emoji-card" style="position: sticky; top: 30px; background: rgba(255,255,255,0.7); box-shadow: inset 0 0 0 2px #fff;">
-                        <h4 class="fw-bold mb-4" style="font-weight: 900;">🧠 How it works</h4>
-                        <p class="text-dark fw-bold mb-4" style="font-size: 1.1rem; line-height: 1.6;">Our AI engine natively parses the product configuration through Google Gemini and automatically constructs professional SEO-ready copywriting snippets before you even press save.</p>
-                        <p class="text-muted fw-bold mb-0 border-start border-4 border-primary ps-3" style="font-size: 1.05rem;">If a unique constraint occurs (e.g. duplicate SKU), the NoSQL raw log is skipped and a safe UI error will intercept it cleanly.</p>
                     </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Hidden field to store saved product id -->
-    <input type="hidden" id="saved-product-id">
+    <!-- Hidden native Toast Container -->
+    <div id="toast-container" class="fixed bottom-8 right-8 z-50 flex flex-col gap-4"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

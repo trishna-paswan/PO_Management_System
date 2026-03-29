@@ -3,67 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PO 🎮 | Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>PO Nexus | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="layout-wrapper">
-        <aside class="sidebar-container">
-            <div class="sidebar">
-                <div class="brand">📦 Nexus PO</div>
-                <nav class="mt-4 flex-grow-1">
-                    <a href="index.html" class="nav-link-custom active">📊 Live Dashboard</a>
-                    <a href="create_po.html" class="nav-link-custom">🛒 New Purchase Order</a>
-                    <a href="create_product.html" class="nav-link-custom">📦 Add to Catalog</a>
-                </nav>
-                <div class="user-widget mt-auto">
-                    <button class="btn-gamified btn-danger-gamified" style="width: 100%; border-radius: 20px; font-size: 1rem;" onclick="logout()">
-                        🚪 Log Out
-                    </button>
+<body class="bg-slate-50 text-slate-900">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center gap-2 font-bold text-xl text-blue-600">
+                    <i data-lucide="package" class="w-6 h-6"></i>
+                    <span>PO Nexus</span>
                 </div>
+            </div>
+            <nav class="flex-grow p-4 space-y-1">
+                <a href="index.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="create_po.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    <span class="font-medium">New Order</span>
+                </a>
+                <a href="create_product.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                    <span class="font-medium">Product Catalog</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-200">
+                <button onclick="logout()" class="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-600 hover:bg-red-50 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span class="font-medium">Log Out</span>
+                </button>
             </div>
         </aside>
 
-        <main class="main-content">
-            <header class="page-header">
-                📊 Purchase Orders
+        <!-- Main Content -->
+        <main class="flex-grow flex flex-col">
+            <!-- Topbar -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8">
+                <h1 class="text-lg font-semibold text-slate-800">Purchase Orders</h1>
+                <div class="flex items-center gap-4">
+                    <button onclick="fetchPOs()" class="p-2 text-slate-500 hover:text-blue-600 transition-colors" title="Refresh">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </button>
+                    <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
+                        JD
+                    </div>
+                </div>
             </header>
 
-            <div class="emoji-card fade-in">
-                <div class="card-title justify-content-between">
-                    <span>🔥 Recent Orders</span>
-                    <button class="btn btn-sm btn-light border p-2" onclick="fetchPOs()" style="border-radius: 12px; font-size: 1.2rem;">🔄</button>
+            <!-- Content Area -->
+            <div class="p-8 space-y-6">
+                <!-- Stats Overview (Optional) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Total Orders</div>
+                        <div class="text-2xl font-bold" id="stat-total-orders">--</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Pending Approval</div>
+                        <div class="text-2xl font-bold text-amber-600" id="stat-pending-orders">--</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Total Value</div>
+                        <div class="text-2xl font-bold text-blue-600" id="stat-total-value">$0.00</div>
+                    </div>
                 </div>
-                
-                <div class="table-container" style="overflow-x: auto;">
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>🏷️ Ref No</th>
-                                <th>🏢 Vendor ID</th>
-                                <th>💰 Total Amount</th>
-                                <th>💸 Tax</th>
-                                <th>📊 Status</th>
-                                <th class="text-end">⚒️ Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="po-table-body">
-                            <tr><td colspan="6" class="text-center text-muted py-5" style="font-size: 1.5rem; font-weight: 800;">⌛ Loading pipeline data...</td></tr>
-                        </tbody>
-                    </table>
+
+                <!-- PO Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+                        <h2 class="font-semibold text-slate-800">Recent Transactions</h2>
+                        <a href="create_po.html" class="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                            Create New <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                                    <th class="px-6 py-4 font-semibold">Ref No</th>
+                                    <th class="px-6 py-4 font-semibold">Vendor</th>
+                                    <th class="px-6 py-4 font-semibold">Amount</th>
+                                    <th class="px-6 py-4 font-semibold">Tax</th>
+                                    <th class="px-6 py-4 font-semibold">Status</th>
+                                    <th class="px-6 py-4 font-semibold text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="po-table-body" class="divide-y divide-slate-100">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                                        <div class="flex flex-col items-center gap-2">
+                                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                            <span>Loading data...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Hidden native Toast Container loaded by JS -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055; display: none;"></div>
+    <!-- Hidden native Toast Container -->
+    <div id="toast-container" class="fixed bottom-8 right-8 z-50 flex flex-col gap-4"></div>
 
+    <!-- Bootstrap/Socket.io compatibility -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
     <script>
+        lucide.createIcons();
         fetchPOs();
         initWebSocket();
     </script>
