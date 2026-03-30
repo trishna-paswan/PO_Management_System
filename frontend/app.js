@@ -1,9 +1,8 @@
 const API_PYTHON = 'http://localhost:8080/api';
 
 function checkAuth() {
-    if (!window.location.pathname.endsWith("login.html") && !localStorage.getItem("jwt")) {
-        window.location.href = "login.html";
-    }
+    // Auth disabled for now
+    return;
 }
 checkAuth();
 
@@ -73,12 +72,10 @@ async function loginWithGoogle() {
 }
 
 function getAuthHeader() {
-    const token = localStorage.getItem("jwt");
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
+    return {};
 }
 
 function initWebSocket() {
-    if (!localStorage.getItem("jwt")) return;
     if (typeof io !== 'undefined') {
         const socket = io('http://localhost:3000');
         socket.on('connect', () => { console.log('Connected to Real-Time Notification Server'); });

@@ -53,23 +53,23 @@ async def login_via_provider(token_data: dict):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/api/vendors", response_model=List[schemas.Vendor])
-def read_vendors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def read_vendors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_vendors(db, skip=skip, limit=limit)
 
 @app.post("/api/vendors", response_model=schemas.Vendor)
-def create_vendor(vendor: schemas.VendorCreate, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def create_vendor(vendor: schemas.VendorCreate, db: Session = Depends(get_db)):
     return crud.create_vendor(db=db, vendor=vendor)
 
 @app.get("/api/products", response_model=List[schemas.Product])
-def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_products(db, skip=skip, limit=limit)
 
 @app.post("/api/products", response_model=schemas.Product)
-def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
     return crud.create_product(db=db, product=product)
 
 @app.post("/api/products/draft-description")
-async def draft_desc(req: schemas.ProductDraft, current_user: str = Depends(auth.get_current_user)):
+async def draft_desc(req: schemas.ProductDraft):
     if not req.name:
         raise HTTPException(status_code=400, detail="Must provide a product name")
     desc = services.generate_product_description(req.name)
@@ -77,7 +77,7 @@ async def draft_desc(req: schemas.ProductDraft, current_user: str = Depends(auth
     return {"description": desc}
 
 @app.post("/api/products/{product_id}/generate-description")
-async def generate_desc(product_id: int, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+async def generate_desc(product_id: int, db: Session = Depends(get_db)):
     product = crud.get_product(db, product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -88,7 +88,7 @@ async def generate_desc(product_id: int, db: Session = Depends(get_db), current_
     return {"description": desc}
 
 @app.post("/api/pos", response_model=schemas.PurchaseOrderResp)
-def create_purchase_order(po: schemas.POCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def create_purchase_order(po: schemas.POCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     vendor = crud.get_vendor(db, po.vendor_id)
     if not vendor:
         raise HTTPException(status_code=400, detail="Invalid Vendor ID")
@@ -98,11 +98,11 @@ def create_purchase_order(po: schemas.POCreate, background_tasks: BackgroundTask
     return db_po
 
 @app.get("/api/pos", response_model=List[schemas.PurchaseOrderResp])
-def read_pos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def read_pos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_pos(db, skip=skip, limit=limit)
 
 @app.patch("/api/pos/{po_id}/status", response_model=schemas.PurchaseOrderResp)
-def update_po_status(po_id: int, status_update: schemas.POStatusUpdate, background_tasks: BackgroundTasks, db: Session = Depends(get_db), current_user: str = Depends(auth.get_current_user)):
+def update_po_status(po_id: int, status_update: schemas.POStatusUpdate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     updated_po = crud.update_po_status(db, po_id, status_update.status)
     if not updated_po:
         raise HTTPException(status_code=404, detail="PO not found")
