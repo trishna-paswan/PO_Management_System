@@ -13,11 +13,6 @@ Designed with a microservices architecture, **PO Nexus** combines high-performan
 - Uses **Inter** typography and **Lucide Icons** for a professional aesthetic.
 - Optimized for usability, clarity, and rapid procurement actions.
 
-### ⚙️ High-Performance Backend
-- Powered by **Python FastAPI** for asynchronous, type-safe API endpoints.
-- Robust data validation and structured request handling.
-- Seamlessly scales across multiple microservices.
-
 ### 🔄 Real-Time Updates
 - Dedicated **Node.js WebSocket** microservice (`notification_service`).
 - Instantly reflects PO status changes and new order creations across all dashboards.
