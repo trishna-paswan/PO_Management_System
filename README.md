@@ -52,11 +52,11 @@ cd frontend
 # You can use any static server, e.g., Python's built-in module
 python3 -m http.server 8000
 ```
-*Dashboard accessible at: `http://localhost:8000`*
+*Dashboard accessible at: `http://localhost:8000/index.html`*
 
 ---
 
-## Authentication
-Navigate to `http://localhost:8000/login.html` to begin. The system includes a mock Google OAuth flow for demonstration purposes.
-
-> **Note on MongoDB**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging without interrupting core procurement functionality.
+## Usage Note
+- **Required Fields**: All essential form inputs in the Product Catalog and Purchase Order creation screens are marked with a red asterisk (`*`).
+- **Direct Access**: Authentication has been disabled for this version; you can navigate directly to the Dashboard and start managing orders immediately.
+- **MongoDB**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging without interrupting core procurement functionality.
