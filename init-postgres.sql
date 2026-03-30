@@ -45,6 +45,11 @@ INSERT INTO vendors (name, contact, rating) VALUES
 
 -- Seed Data for Products
 INSERT INTO products (name, sku, unit_price, stock_level, description) VALUES 
-('Wireless Mouse', 'W-MOU-001', 25.50, 100, 'Ergonomic 2.4G wireless mouse.'),
-('Mechanical Keyboard', 'M-KEY-002', 85.00, 50, 'RGB mechanical keyboard with blue switches.'),
-('LED Monitor', 'L-MON-003', 150.00, 30, '24-inch Full HD LED monitor.');
+('Wireless Mouse', 'W-MOU-001', 25.5, 100, 'Ergonomic 2.4G wireless mouse.'),
+('Mechanical Keyboard', 'M-KEY-002', 85.0, 50, 'RGB mechanical keyboard with blue switches.'),
+('LED Monitor', 'L-MON-003', 150.0, 30, '24-inch Full HD LED monitor.'),
+('Dell Latitude 5440 Laptop', 'DELL-LAT-5440', 68599.99, 15, 'A high-quality, premium Dell Latitude 5440 Laptop designed for maximum resilience and productivity in any environment.'),
+('HP Wireless Mouse', 'HP-MOU-WL01', 799.0, 120, 'A high-quality, premium HP Wireless Mouse designed for maximum resilience and productivity in any environment.'),
+('Logitech Mechanical Keyboard', 'LOG-KEY-MECH', 4299.99, 60, 'A high-quality, premium Logitech Mechanical Keyboard designed for maximum resilience and productivity in any environment.'),
+('Eco-Friendly Packaging Box', 'GP-PACK-50', 959.99, 200, 'A high-quality, premium Eco-Friendly Packaging Box designed for maximum resilience and productivity in any environment.'),
+('LED_TV', 'LG', 59999.0, 10, 'A high-quality, premium LED designed for maximum resilience and productivity in any environment.');
