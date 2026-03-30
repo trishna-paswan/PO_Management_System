@@ -1,71 +1,110 @@
-# PO Nexus | Purchase Order Management System
+# 🚀 PO Nexus | Purchase Order Management System
 
-A professional, enterprise-grade full-stack application designed for streamlined procurement management. Featuring a modern Tailwind CSS interface, real-time WebSocket updates, and native Google Gemini AI integration for automated product cataloging.
+A modern, enterprise-grade full-stack application built to streamline procurement workflows with precision, scalability, and intelligent automation.
 
-## Features
-- **Professional Enterprise UI**: A clean, high-performance interface built with **Tailwind CSS**, **Inter** typography, and **Lucide Icons**. Optimized for clarity and efficiency.
-- **RESTful API Engine**: A robust backend architecture powered by **Python FastAPI** for high-speed data processing and type-safe endpoints.
-- **Real-Time WebSockets**: A dedicated Node.js microservice (`notification_service`) provides instant dashboard synchronization, broadcasting status changes to all connected clients without page reloads.
-- **Hybrid Data Architecture**:
-  1. **SQLite (Relational Core)**: Normalized relational schema for procurement logic, including `Vendor`, `Product`, `PurchaseOrder`, and `POItem` with strict referential integrity.
-  2. **MongoDB (NoSQL Layer)**: High-speed unstructured logging for AI-generated content. Raw JSON payloads from Gemini AI completions are stored without rigid schema constraints for analytics.
+Designed with a microservices architecture, **PO Nexus** combines high-performance APIs, real-time updates, and AI-powered enhancements to deliver a seamless procurement experience.
 
 ---
 
-## Technical Architecture
+## ✨ Key Features
 
-### 1. Relational Logic (SQLite)
-The core procurement flow requires high data integrity for financial calculations and inventory tracking:
-*   **Vendors**: Profiles for supply partners with a `One-to-Many` relationship to orders.
-*   **Products**: Master catalog holding SKUs and unit prices.
-*   **Purchase Orders**: Tracks operational states (Pending -> Approved -> Completed) and financial totals.
-*   **PO Items**: Junction table resolving the `Many-to-Many` relationship between orders and products, capturing the `price_at_purchase` to preserve historical financial accuracy.
+### 🎯 Enterprise-Grade UI
+- Built with **Tailwind CSS** for a clean, responsive, and high-performance layout.
+- Uses **Inter** typography and **Lucide Icons** for a professional aesthetic.
+- Optimized for usability, clarity, and rapid procurement actions.
 
-### 2. AI Intelligence (MongoDB & Gemini)
-When adding new products, the system utilizes **Google Gemini AI** to generate professional marketing copy. These logs—including token usage and raw descriptions—are piped into MongoDB to keep the relational core focused strictly on logistics.
+### ⚙️ High-Performance Backend
+- Powered by **Python FastAPI** for asynchronous, type-safe API endpoints.
+- Robust data validation and structured request handling.
+- Seamlessly scales across multiple microservices.
+
+### 🔄 Real-Time Updates
+- Dedicated **Node.js WebSocket** microservice (`notification_service`).
+- Instantly reflects PO status changes and new order creations across all dashboards.
+- **No page refresh required** ⚡ — stay synced in real-time.
+
+### 🧠 AI-Powered Product Intelligence
+- Native integration with **Google Gemini AI**.
+- Automatically generates professional marketing copy and catchy product descriptions.
+- Enhances your product catalog with zero manual effort.
 
 ---
 
-## Local Setup
+## 🗄️ Hybrid Data Architecture
 
-This microservice architecture requires three concurrent processes:
+### 🔷 Relational Core (PostgreSQL)
+Handles structured procurement data with strict referential integrity:
+*   **Vendors**: Supplier profiles with a `One-to-Many` relationship to orders.
+*   **Products**: Master catalog with unique SKUs, pricing, and stock tracking.
+*   **Purchase Orders**: Tracks the full lifecycle from `DRAFT` → `PLACED` → `COMPLETED`.
+*   **PO Items**: Junction table capturing precise quantity and `price_at_purchase` for historical financial accuracy.
 
-### Terminal 1: Python Backend (FastAPI)
+### 🔶 NoSQL Layer (MongoDB)
+Handles unstructured AI logs and telemetry:
+*   Stores raw **Gemini AI** responses and token usage.
+*   Enables deep analytics on AI-generated content without bloating the relational core.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+       Frontend (HTML + Tailwind)
+                  ↓
+       FastAPI Backend (Python)
+          ↙               ↘
+PostgreSQL (Core)      MongoDB (AI Logs)
+          ↘               ↙
+       WebSocket (Node.js) → [Real-Time Dashboard]
+```
+
+---
+
+## ⚙️ Local Setup
+
+Run these 3 services simultaneously to power the full ecosystem:
+
+### 🟢 Terminal 1: Backend (FastAPI)
 ```bash
 cd backend_python
-# Recommended: Create and activate a virtual environment
+# Install dependencies: pip install -r requirements.txt
 python main.py
 ```
-*API runs on: `http://localhost:8080`*
+📍 **API runs on**: `http://localhost:8080`
 
-### Terminal 2: Notification Service (Node.js)
+### 🔵 Terminal 2: Notification Service (Node.js)
 ```bash
 cd notification_service
 npm install
 node server.js
 ```
-*WebSocket relayer runs on: `http://localhost:3000`*
+📍 **WebSocket runs on**: `http://localhost:3000`
 
-### Terminal 3: Frontend Client
+### 🟡 Terminal 3: Frontend Client
 ```bash
 cd frontend
-# You can use any static server, e.g., Python's built-in module
+# Start a simple static server
 python3 -m http.server 8000
 ```
-*Dashboard accessible at: `http://localhost:8000`*
+📍 **Open**: `http://localhost:8000/index.html`
 
 ---
 
-## Authentication (Google OAuth 2.0)
-The system uses **Google Identity Services (GSI)** for secure authentication:
-1.  **Frontend**: The `login.html` uses the GSI library to render a "Sign in with Google" button.
-2.  **Redirect/Callback**: Upon successful login, Google returns an `id_token` (JWT) to the `handleCredentialResponse` callback in `app.js`.
-3.  **Backend Verification**: The token is sent to `/api/auth/google`, where the backend verifies it using `google-auth` library against your `GOOGLE_CLIENT_ID`.
-4.  **Local JWT**: Once verified, the backend issues a local session JWT used for all subsequent API requests.
+## 🔐 Authentication (Google OAuth 2.0)
 
-**Setup**:
-*   Generate a Client ID at [Google Cloud Console](https://console.cloud.google.com/).
-*   Add `GOOGLE_CLIENT_ID` to your environment variables or `auth.py`.
-*   Update the `data-client_id` in `login.html`.
+The system uses **Google Identity Services (GSI)** for secure, enterprise-ready authentication:
+1.  **Frontend**: `login.html` renders a secure "Sign in with Google" button.
+2.  **Verification**: The backend verifies the `id_token` against your `GOOGLE_CLIENT_ID`.
+3.  **Session**: A local JWT is issued for authorized API access.
 
-> **Note on MongoDB**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging without interrupting core procurement functionality.
+> **Note on MongoDB**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging, ensuring the core procurement flow remains uninterrupted.
+
+---
+
+## 🧾 Application Flow
+
+1.  **Dashboard**: Overview of all active Purchase Orders.
+2.  **Create PO**: Select a Vendor and add Products.
+3.  **Auto-Calculation**: System calculates Subtotals, Tax (5%), and Final Totals in real-time.
+4.  **Submit**: PO is created in `DRAFT` status.
+5.  **Lifecycle**: Update status from **Pending → Approved → Completed** to trigger instant WebSocket broadcasts.

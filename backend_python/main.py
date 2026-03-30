@@ -11,7 +11,7 @@ async def lifespan(app: FastAPI):
     # Create tables on startup
     models.Base.metadata.create_all(bind=engine)
     
-    # Seed initial data for SQLite
+    # Seed initial data if database is empty
     db = next(get_db())
     if not db.query(models.Vendor).first():
         vendors = [
