@@ -1,69 +1,104 @@
-# 📦 PO Nexus | Purchase Order Management System
+🚀 PO Nexus | Purchase Order Management System
 
-A professional, enterprise-grade full-stack application designed for streamlined procurement management. Featuring a modern **Tailwind CSS** interface, real-time **WebSocket** updates, and native **Google Gemini AI** integration for automated product cataloging.
+A modern, enterprise-grade full-stack application built to streamline procurement workflows with precision, scalability, and intelligent automation.
 
----
+Designed with a microservices architecture, PO Nexus combines high-performance APIs, real-time updates, and AI-powered enhancements to deliver a seamless procurement experience.
 
-## ✨ Key Features
+✨ Key Features
+🎯 Enterprise-Grade UI
+Built with Tailwind CSS for a clean and responsive layout
+Uses Inter typography and Lucide Icons for a modern look
+Optimized for usability, clarity, and speed
+⚙️ High-Performance Backend
+Developed using FastAPI (Python)
+Fully RESTful architecture with type-safe endpoints
+Efficient request handling and structured data validation
+🔄 Real-Time Updates
+Powered by a Node.js WebSocket microservice
+Instantly reflects:
+PO status updates
+New order creation
+No page refresh required ⚡
+🧠 AI-Powered Product Intelligence
+Integrated with Google Gemini AI
+Generates:
+Professional product descriptions
+Marketing-ready content
+Enhances product catalog automatically
+🗄️ Hybrid Data Architecture
+🔷 Relational Core (SQLite)
 
-*   **Professional Enterprise UI**: A clean, high-performance interface built with **Tailwind CSS**, **Inter** typography, and **Lucide Icons**. Optimized for clarity and efficiency.
-*   **RESTful API Engine**: A robust backend architecture powered by **Python FastAPI** for high-speed data processing and type-safe endpoints.
-*   **Real-Time WebSockets**: A dedicated Node.js microservice (`notification_service`) provides instant dashboard synchronization, broadcasting status changes to all connected clients without page reloads.
-*   **Hybrid Data Architecture**: 
-    1.  **Relational (SQLite)** for ironclad financial and logistical integrity.
-    2.  **NoSQL (MongoDB)** for high-speed, unstructured AI generation logging.
+Handles structured procurement data with strict integrity:
 
----
+Vendors
+Supplier profiles
+One-to-Many relationship with orders
+Products
+SKU-based catalog
+Pricing & stock tracking
+Purchase Orders
 
-## 🏗️ Technical Architecture
+Tracks lifecycle:
 
-We utilize a **Hybrid Relational-NoSQL Strategy** to balance data integrity with AI-driven flexibility.
+Pending → Approved → Completed
+Stores financial totals
+PO Items
+Junction table (Many-to-Many)
+Captures:
+Quantity
+Price at purchase (historical accuracy)
+🔶 NoSQL Layer (MongoDB)
 
-### 1. Relational Core (SQLite)
-Because procurement requires strict constraints (calculating totals, inventory validation, vendor linking), our core logic is fully normalized:
-*   **`vendors` Table**: Stores partner profiles; has a `One-to-Many` relationship with purchase orders.
-*   **`products` Table**: Master catalog holding SKUs, unit prices, and stock levels.
-*   **`purchase_orders` Table**: Core logistic object tracking calculations (Total, Tax) and operational states (`Pending` → `Approved` → `Completed`).
-*   **`po_items` Table**: A junction table resolving the `Many-to-Many` relationship between orders and products. It securely logs the `price_at_purchase` to preserve historical financial accuracy.
+Handles unstructured AI data:
 
-### 2. Unstructured Layer (MongoDB + Gemini AI)
-When adding products, the system uses **Google Gemini AI** to generate marketing copy. These outputs are largely unstructured and are piped into MongoDB:
-*   **`ai_logs` Collection**: Raw JSON payloads containing descriptions, token usage, and timestamps are dumped natively to keep the relational core focused strictly on logistics.
+Stores raw Gemini AI responses
+Logs:
+Generated descriptions
+Token usage
+Enables future analytics & insights
+🏗️ System Architecture
+Frontend (HTML + Tailwind)
+        ↓
+FastAPI Backend (Python)
+        ↓
+SQLite (Core Data)
+        ↓
+MongoDB (AI Logs)
 
----
++ WebSocket Layer (Node.js) for real-time updates
+⚙️ Local Setup
 
-## 🚀 Local Setup
+Run 3 services simultaneously:
 
-This microservice architecture requires three concurrent processes to be running:
-
-### 🐍 Terminal 1: Python Backend (FastAPI)
-```bash
+🟢 Terminal 1: Backend (FastAPI)
 cd backend_python
-# Recommended: Create and activate a virtual environment
 python main.py
-```
-> *API is served at:* `http://localhost:8080`
 
-### ⚡ Terminal 2: Notification Service (Node.js)
-```bash
+📍 Runs on: http://localhost:8080
+
+🔵 Terminal 2: Notification Service (Node.js)
 cd notification_service
 npm install
 node server.js
-```
-> *WebSocket relayer runs on:* `http://localhost:3000`
 
-### 🌐 Terminal 3: Frontend Client
-```bash
+📍 Runs on: http://localhost:3000
+
+🟡 Terminal 3: Frontend
 cd frontend
-# Serve using any static server
 python3 -m http.server 8000
-```
-> *Dashboard accessible at:* `http://localhost:8000/index.html`
 
----
+📍 Open: http://localhost:8000/index.html
 
-## 📝 Usage Notes
+🧾 Application Flow
+Open Dashboard
+Create New Purchase Order
+Select Vendor & Add Products
+System calculates:
+Subtotal
+5% Tax
+Final Total
+Submit PO → Status set to Pending
 
-*   **Required Fields**: All essential form inputs (Product Name, SKU, Price, Vendor) are marked with a red asterisk (`*`).
-*   **Direct Access**: Authentication has been disabled; you can navigate directly to the Dashboard to begin managing orders immediately.
-*   **MongoDB Fail-Safe**: If a MongoDB instance is not detected on port 27017, the system will gracefully bypass AI logging without interrupting core procurement functionality.
+Update status via Dashboard:
+
+Pending → Approved → Completed
